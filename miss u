@@ -1,0 +1,12 @@
+const tempDir = join(rootDir, 'temp');
+if (existsSync(tempDir)) {
+  spawnSync('rm', ['-rf', 'temp'], getSpawnOptions(rootDir));
+}
+mkdirSync(tempDir);
+
+/* получение параметров из package.json */
+const { name, version, repository } = require(join(rootDir, 'package.json'));
+const originUrl = repository.url.replace(`${name}-source`, name);
+
+spawnSync('git', ['init'], getSpawnOptions(tempDir));
+spawnSync('git', ['remote', 'add', 'origin', originUrl], getSpawnOptions(tempDir));
